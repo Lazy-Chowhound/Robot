@@ -1,8 +1,6 @@
 package com.demo.sisyphus.hellorobot.model;
 
-/**
- * Created by Sisyphus on 2017/3/1.
- */
+
 public class Msg {
 
     private String msg;

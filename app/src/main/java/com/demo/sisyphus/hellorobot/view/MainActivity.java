@@ -15,6 +15,7 @@ import com.demo.sisyphus.hellorobot.R;
 import com.demo.sisyphus.hellorobot.model.HttpUtils;
 import com.demo.sisyphus.hellorobot.model.Msg;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,7 +24,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private EditText etMsg;
+    private EditText msg_box;
     private Button btnSend;
     private RecyclerView rvChat;
 
@@ -44,33 +45,35 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void initView() {
-        etMsg = (EditText) findViewById(R.id.et_msg);
+        msg_box = (EditText) findViewById(R.id.msg_box);
         btnSend = (Button) findViewById(R.id.btn_send);
 
         rvChat = (RecyclerView) findViewById(R.id.rv_chat);
         rvChat.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         list = new ArrayList<>();
-        list.add(new Msg("hello", 1));
-        list.add(new Msg("我是图灵机器人", 1));
-        list.add(new Msg("很高兴可以给你解答问题", 1));
+        list.add(new Msg("你好", 1));
+        list.add(new Msg("我是对话机器人", 1));
+        list.add(new Msg("你想聊些什么", 1));
 
         chatAdapter = new ChatAdapter(this, list);
         rvChat.setAdapter(chatAdapter);
 
-        json = "{\"perception\":{\"inputText\":{\"text\":\"123\"}},\"userInfo\":{\"apiKey\":\"5aab776a08fb4940a9df4515d21b85f3\",\"userId\":\"helloRobot\"}}";
+        json = "{\"perception\":{\"inputText\":{\"text\":\"[*]\"}},\"userInfo\":{\"apiKey\":\"5aab776a08fb4940a9df4515d21b85f3\",\"userId\":\"helloRobot\"}}";
     }
 
     @Override
     public void onClick(View v) {
-        list.add(new Msg(etMsg.getText().toString(), 0));
+        list.add(new Msg(msg_box.getText().toString(), 0));
         chatAdapter.notifyItemInserted(chatAdapter.getItemCount() - 1);
         rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
-        etMsg.setText("");
+        json = json.replaceAll("[*]", msg_box.getText().toString());
+        msg_box.setText("");
         new Thread() {
             @Override
             public void run() {
                 try {
                     text = new HttpUtils().sendPost("http://openapi.tuling123.com/openapi/api/v2", json);
+                    Log.i("JSON",json);
                     readJSON(text);
                     list.add(new Msg(text, 1));
                     if (url != null) {
@@ -88,12 +91,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void readJSON(String strJson) {
         Log.i("strJson", strJson);
         try {
-            JSONObject jsonObject;
-            jsonObject = new JSONObject(strJson);
-            String content = jsonObject.getString("results");
-            JSONObject contentjson = new JSONObject(content);
-            text = contentjson.getString("values");
-            url = jsonObject.getString("url");
+            JSONObject jsonObject = new JSONObject(strJson);
+            JSONArray jsonArray = jsonObject.getJSONArray("results");
+            for (int i = 0; i <= jsonArray.length(); i++) {
+                JSONObject jsonObject1 = jsonArray.getJSONObject(i);
+                String values = jsonObject1.getString("values");
+                JSONObject textJson = new JSONObject(values);
+                text = textJson.getString("text");
+                url = jsonObject1.getString("url");
+            }
         } catch (JSONException e) {
             url = null;
             e.printStackTrace();

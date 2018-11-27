@@ -16,9 +16,7 @@ import com.demo.sisyphus.hellorobot.model.Msg;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Sisyphus on 2017/3/1.
- */
+
 public class ChatAdapter extends RecyclerView.Adapter {
 
     private Context context;

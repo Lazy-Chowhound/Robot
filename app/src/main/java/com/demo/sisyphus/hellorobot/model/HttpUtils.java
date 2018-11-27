@@ -16,9 +16,7 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-/**
- * Created by Sisyphus on 2017/3/2.
- */
+
 public class HttpUtils {
 
     private String strResponse;
@@ -48,20 +46,8 @@ public class HttpUtils {
         return strResponse;
     }
 
-    /***
-     * post请求数据
-     * @param url 请求地址
-     * @param keys 请求参数的key值数组
-     * @param values 请求参数的key对应的value数组
-     * @return 返回请求结果
-     * @throws IOException
-     */
     public String sendPost(String url, String json) throws IOException {
         client = new OkHttpClient();
-//        FormBody.Builder builder = new FormBody.Builder();
-//        for (int i = 0; i < keys.length; i++) {
-//            builder.add(keys[i], values[i]);
-//        }
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
         RequestBody body = RequestBody.create(JSON,json);
         Request request = new Request.Builder()
