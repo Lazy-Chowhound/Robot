@@ -1,4 +1,4 @@
-package com.demo.sisyphus.hellorobot;
+package com.demo.szp.ChattingRobot;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

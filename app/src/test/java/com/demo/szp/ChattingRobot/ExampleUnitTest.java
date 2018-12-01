@@ -1,4 +1,4 @@
-package com.demo.sisyphus.hellorobot;
+package com.demo.szp.ChattingRobot;
 
 import org.junit.Test;
 

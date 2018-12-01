@@ -1,4 +1,4 @@
-package com.demo.sisyphus.hellorobot.view;
+package com.demo.szp.ChattingRobot.view;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -10,8 +10,8 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.demo.sisyphus.hellorobot.R;
-import com.demo.sisyphus.hellorobot.model.Msg;
+import com.demo.szp.ChattingRobot.R;
+import com.demo.szp.ChattingRobot.model.Msg;
 
 import java.util.ArrayList;
 import java.util.List;

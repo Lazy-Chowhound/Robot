@@ -1,4 +1,4 @@
-package com.demo.sisyphus.hellorobot.model;
+package com.demo.szp.ChattingRobot.model;
 
 
 public class Msg {
