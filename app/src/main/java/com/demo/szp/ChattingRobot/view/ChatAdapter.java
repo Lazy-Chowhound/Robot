@@ -110,7 +110,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         return list.get(position).getType() == 0 ? ME : OTHRE;
     }
 
-    public void addMsg(Msg msg){
-        list.add(msg);
-    }
+//    public void addMsg(Msg msg){
+//        list.add(msg);
+//    }
 }

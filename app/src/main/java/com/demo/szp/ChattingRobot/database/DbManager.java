@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.demo.szp.ChattingRobot.model.Msg;
 
@@ -11,8 +12,8 @@ import java.util.ArrayList;
 
 
 public class DbManager {
-    DatabaseHelper databaseHelper;
-    SQLiteDatabase sqLiteDatabase;
+    private DatabaseHelper databaseHelper;
+    private SQLiteDatabase sqLiteDatabase;
 
     public DbManager(Context context) {
         databaseHelper = new DatabaseHelper(context, "record", null, 1);
@@ -27,18 +28,16 @@ public class DbManager {
         sqLiteDatabase.insert("record", null, contentValues);
     }
 
-    public ArrayList<Msg> search_record() {
-        ArrayList<Msg> list = new ArrayList<>();
+    public void search_record(ArrayList<Msg> list) {
         Cursor cursor = sqLiteDatabase.query("record", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            for (int i = 0; i < cursor.getCount(); i++) {
-                cursor.move(i);
-                String text = cursor.getString(cursor.getColumnIndex("text"));
-                int type = cursor.getInt(cursor.getColumnIndex("type"));
-                list.add(new Msg(text, type));
-            }
+        while(cursor.moveToNext()){
+            String text = cursor.getString(cursor.getColumnIndex("text"));
+            int type = cursor.getInt(cursor.getColumnIndex("type"));
+            list.add(new Msg(text, type));
+            Log.i("text", text);
+            Log.i("type", "" + type);
         }
-        return list;
+        cursor.close();
     }
 
     public void delete_record() {
