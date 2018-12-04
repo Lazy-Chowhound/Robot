@@ -30,7 +30,7 @@ public class DbManager {
 
     public void search_record(ArrayList<Msg> list) {
         Cursor cursor = sqLiteDatabase.query("record", null, null, null, null, null, null);
-        while(cursor.moveToNext()){
+        while (cursor.moveToNext()) {
             String text = cursor.getString(cursor.getColumnIndex("text"));
             int type = cursor.getInt(cursor.getColumnIndex("type"));
             list.add(new Msg(text, type));
@@ -41,11 +41,9 @@ public class DbManager {
     }
 
     public void delete_record() {
-        Cursor cursor = sqLiteDatabase.query("record", null, null, null, null, null, null);
-        if (cursor.moveToFirst()) {
-            for (int i = 1; i <= cursor.getCount(); i++) {
-                sqLiteDatabase.delete("record", "id=", new String[]{String.valueOf(i)});
-            }
-        }
+        String sql = "DELETE FROM record";
+        sqLiteDatabase.execSQL(sql);
+        sql = "UPDATE sqlite_sequence SET seq = 0 WHERE name='record'";
+        sqLiteDatabase.execSQL(sql);
     }
 }
