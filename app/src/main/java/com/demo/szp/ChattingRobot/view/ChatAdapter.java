@@ -24,7 +24,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
     private static final int ME = 0;
     private static final int OTHRE = 1;
 
-    private List<Msg> list = new ArrayList<>();
+    private List<Msg> list;
 
     public ChatAdapter(Context context, ArrayList<Msg> list){
         this.context = context;
@@ -109,8 +109,4 @@ public class ChatAdapter extends RecyclerView.Adapter {
     public int getItemViewType(int position) {
         return list.get(position).getType() == 0 ? ME : OTHRE;
     }
-
-//    public void addMsg(Msg msg){
-//        list.add(msg);
-//    }
 }

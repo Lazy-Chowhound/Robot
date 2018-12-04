@@ -20,6 +20,13 @@ public class DbManager {
         sqLiteDatabase = databaseHelper.getWritableDatabase();
     }
 
+    /**
+     * 插入一条记录
+     *
+     * @param mytext
+     * @param mytype
+     * @param mydate
+     */
     public void insert_record(String mytext, int mytype, String mydate) {
         ContentValues contentValues = new ContentValues();
         contentValues.put("text", mytext);
@@ -28,7 +35,12 @@ public class DbManager {
         sqLiteDatabase.insert("record", null, contentValues);
     }
 
-    public void search_record(ArrayList<Msg> list) {
+    /**
+     * 查找全部记录
+     *
+     * @param list
+     */
+    public void search_all_record(ArrayList<Msg> list) {
         Cursor cursor = sqLiteDatabase.query("record", null, null, null, null, null, null);
         while (cursor.moveToNext()) {
             String text = cursor.getString(cursor.getColumnIndex("text"));
@@ -40,10 +52,23 @@ public class DbManager {
         cursor.close();
     }
 
-    public void delete_record() {
+    /**
+     * 删除所有记录
+     */
+    public void delete_all_record() {
         String sql = "DELETE FROM record";
         sqLiteDatabase.execSQL(sql);
+        // 将自增字段重置
         sql = "UPDATE sqlite_sequence SET seq = 0 WHERE name='record'";
         sqLiteDatabase.execSQL(sql);
+    }
+
+    /**
+     * 删除某条记录
+     *
+     * @param id
+     */
+    public void search_record(int id) {
+
     }
 }

@@ -1,8 +1,10 @@
 package com.demo.szp.ChattingRobot.view;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.demo.szp.ChattingRobot.R;
 import com.demo.szp.ChattingRobot.database.DbManager;
@@ -31,16 +32,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private EditText msg_box;
     private Button btnSend;
-    private RecyclerView rvChat;
     private ImageView imageView_remove;
     private ImageView imageView_search;
 
+    private RecyclerView rvChat;
     private ChatAdapter chatAdapter;
     private ArrayList<Msg> list;
 
     private String json;
     private String text;
     private String url;
+    private String record;
 
     private DbManager dbManager;
     private Date date;
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         rvChat.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
 
         // 加载之前的对话记录
-        dbManager.search_record(list);
+        dbManager.search_all_record(list);
 
         date = new Date(System.currentTimeMillis());
         list.add(new Msg("你好", 1));
@@ -94,8 +96,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 list.add(new Msg(msg_box.getText().toString(), 0));
                 chatAdapter.notifyItemInserted(chatAdapter.getItemCount() - 1);
                 rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
-                json = json.replaceAll("[*]", msg_box.getText().toString());
 
+                json = json.replaceAll("[*]", msg_box.getText().toString());
                 date = new Date(System.currentTimeMillis());
                 dbManager.insert_record(msg_box.getText().toString(), 0, simpleDateFormat.format(date));
 
@@ -123,10 +125,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 }.start();
                 break;
             case R.id.remove:
-                dbManager.delete_record();
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle("确认");
+                builder.setMessage("是否删除所有记录?");
+                builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dbManager.delete_all_record();
+                        //调整显示
+                        int count = chatAdapter.getItemCount();
+                        list.clear();
+                        chatAdapter.notifyItemRangeRemoved(0, count);
+                        rvChat.smoothScrollToPosition(0);
+                    }
+                });
+                builder.setNegativeButton("否", null);
+                builder.show();
                 break;
             case R.id.search:
-                Toast.makeText(getApplicationContext(), "搜索", Toast.LENGTH_LONG).show();
+                final EditText editText = new EditText(this);
+                AlertDialog.Builder input = new AlertDialog.Builder(this);
+                input.setTitle("输入想查找的消息");
+                input.setView(editText);
+                input.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        record = editText.getText().toString();
+                        for (int x = 0; x < list.size(); x++) {
+                            Msg item = list.get(x);
+                            if (item.getMsg().equals(record)) {
+                                rvChat.smoothScrollToPosition(x);
+                                break;
+                            }
+                        }
+                    }
+                });
+                input.setNegativeButton("取消", null);
+                input.show();
                 break;
         }
     }
