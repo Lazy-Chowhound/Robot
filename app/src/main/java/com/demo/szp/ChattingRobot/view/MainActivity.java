@@ -85,6 +85,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         chatAdapter = new ChatAdapter(this, list);
         rvChat.setAdapter(chatAdapter);
+        rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
+
         //图灵API参数
         json = "{\"perception\":{\"inputText\":{\"text\":\"[*]\"}},\"userInfo\":{\"apiKey\":\"5aab776a08fb4940a9df4515d21b85f3\",\"userId\":\"helloRobot\"}}";
     }

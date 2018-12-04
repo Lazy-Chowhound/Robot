@@ -26,7 +26,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
     private List<Msg> list;
 
-    public ChatAdapter(Context context, ArrayList<Msg> list){
+    public ChatAdapter(Context context, ArrayList<Msg> list) {
         this.context = context;
         this.list = list;
     }
@@ -56,7 +56,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         ViewHolder viewHolder = null;
 
-        switch (viewType){
+        switch (viewType) {
             case ME:
                 viewHolder = new ViewHolder(LayoutInflater.from(context).inflate(R.layout.chat_item2, parent, false));
                 break;
@@ -80,7 +80,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         tv.setAutoLinkMask(Linkify.ALL);
         tv.setMovementMethod(LinkMovementMethod.getInstance());
 
-        switch (msg.getType()){
+        switch (msg.getType()) {
             case ME:
                 /**
                  * 当recyclerview承载的数据过多的时候，去滑动recyclerview，
@@ -89,12 +89,12 @@ public class ChatAdapter extends RecyclerView.Adapter {
                  * 所以这之前应该执行清除里面view的操作，即removeAllViews（）
                  */
                 viewHolder.getMe().removeAllViews();
-                tv.setBackgroundResource(R.mipmap.chat_me);
+                tv.setBackgroundResource(R.mipmap.my_dialog);
                 viewHolder.getMe().addView(tv);
                 break;
             case OTHRE:
                 viewHolder.getOther().removeAllViews();
-                tv.setBackgroundResource(R.mipmap.chat_other);
+                tv.setBackgroundResource(R.mipmap.robot_dialog);
                 viewHolder.getOther().addView(tv);
                 break;
         }
