@@ -6,13 +6,12 @@ import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.demo.szp.ChattingRobot.R;
 import com.demo.szp.ChattingRobot.database.DbManager;
@@ -33,7 +32,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private EditText msg_box;
     private Button btnSend;
     private RecyclerView rvChat;
-    private ImageView imageView;
+    private ImageView imageView_remove;
+    private ImageView imageView_search;
 
     private ChatAdapter chatAdapter;
     private ArrayList<Msg> list;
@@ -52,41 +52,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         dbManager = new DbManager(getApplicationContext());
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        list = new ArrayList<>();
 
         setContentView(R.layout.activity_main);
-
+        msg_box = (EditText) findViewById(R.id.msg_box);
+        btnSend = (Button) findViewById(R.id.btn_send);
+        rvChat = (RecyclerView) findViewById(R.id.rv_chat);
+        imageView_remove = (ImageView) findViewById(R.id.remove);
+        imageView_search = (ImageView) findViewById(R.id.search);
         initView();
-        btnSend.setOnClickListener(this);
 
-//        imageView = (ImageView) findViewById(R.id.remove);
-//        imageView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                dbManager.delete_record();
-//            }
-//        });
+        btnSend.setOnClickListener(this);
+        imageView_search.setOnClickListener(this);
+        imageView_remove.setOnClickListener(this);
     }
 
     private void initView() {
-        msg_box = (EditText) findViewById(R.id.msg_box);
-        btnSend = (Button) findViewById(R.id.btn_send);
-
-        rvChat = (RecyclerView) findViewById(R.id.rv_chat);
         rvChat.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
-        list = new ArrayList<>();
 
+        // 加载之前的对话记录
+        dbManager.search_record(list);
 
         date = new Date(System.currentTimeMillis());
-
         list.add(new Msg("你好", 1));
         dbManager.insert_record("你好", 1, simpleDateFormat.format(date));
         list.add(new Msg("我是对话机器人", 1));
         dbManager.insert_record("我是对话机器人", 1, simpleDateFormat.format(date));
         list.add(new Msg("你想聊些什么", 1));
         dbManager.insert_record("你想聊些什么", 1, simpleDateFormat.format(date));
-
-        // 加载之前的对话记录
-        dbManager.search_record(list);
 
         chatAdapter = new ChatAdapter(this, list);
         rvChat.setAdapter(chatAdapter);
@@ -96,37 +89,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        list.add(new Msg(msg_box.getText().toString(), 0));
-        chatAdapter.notifyItemInserted(chatAdapter.getItemCount() - 1);
-        rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
-        json = json.replaceAll("[*]", msg_box.getText().toString());
+        switch (v.getId()) {
+            case R.id.btn_send:
+                list.add(new Msg(msg_box.getText().toString(), 0));
+                chatAdapter.notifyItemInserted(chatAdapter.getItemCount() - 1);
+                rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
+                json = json.replaceAll("[*]", msg_box.getText().toString());
 
-        date = new Date(System.currentTimeMillis());
-        dbManager.insert_record(msg_box.getText().toString(), 0, simpleDateFormat.format(date));
+                date = new Date(System.currentTimeMillis());
+                dbManager.insert_record(msg_box.getText().toString(), 0, simpleDateFormat.format(date));
 
-        msg_box.setText("");
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    text = new HttpUtils().sendPost("http://openapi.tuling123.com/openapi/api/v2", json);
-                    Log.i("JSON", json);
-                    readJSON(text);
-                    list.add(new Msg(text, 1));
+                msg_box.setText("");
+                new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            text = new HttpUtils().sendPost("http://openapi.tuling123.com/openapi/api/v2", json);
+                            Log.i("JSON", json);
+                            readJSON(text);
+                            list.add(new Msg(text, 1));
 
-                    date = new Date(System.currentTimeMillis());
-                    dbManager.insert_record(text, 1, simpleDateFormat.format(date));
+                            date = new Date(System.currentTimeMillis());
+                            dbManager.insert_record(text, 1, simpleDateFormat.format(date));
 
-                    if (url != null) {
-                        list.add(new Msg(url, 1));
+                            if (url != null) {
+                                list.add(new Msg(url, 1));
+                            }
+                        } catch (IOException e) {
+                            Log.e("IOException", e.toString());
+                        }
+                        handler.sendEmptyMessage(0);
                     }
-                } catch (IOException e) {
-                    Log.e("IOException", e.toString());
-                }
-                handler.sendEmptyMessage(0);
-            }
-        }.start();
-
+                }.start();
+                break;
+            case R.id.remove:
+                dbManager.delete_record();
+                break;
+            case R.id.search:
+                Toast.makeText(getApplicationContext(), "搜索", Toast.LENGTH_LONG).show();
+                break;
+        }
     }
 
     public void readJSON(String strJson) {
