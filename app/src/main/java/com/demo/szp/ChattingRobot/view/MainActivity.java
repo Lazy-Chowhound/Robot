@@ -85,8 +85,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         int total = chatAdapter.getItemCount();
-                        Log.i("position", "" + position);
+                        Log.i("total", "" + total);
                         dbManager.delete_record(position + 1, total);
+                        list.remove(position);
+                        chatAdapter.notifyItemRemoved(position);
                     }
                 });
                 builder.show();

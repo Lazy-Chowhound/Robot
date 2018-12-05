@@ -71,14 +71,16 @@ public class DbManager {
      */
     public void delete_record(int id, int count) {
         // 删除该记录
-        sqLiteDatabase.delete("record", "id =", new String[]{String.valueOf(id)});
-//        //将剩下的记录id -1
-//        ContentValues contentValues = new ContentValues();
-//        contentValues.put("id", "id" + 1);
-//        sqLiteDatabase.update("record", contentValues, "id > ?", new String[]{String.valueOf(id)});
-//        //自增字段重置
-//        contentValues.clear();
-//        contentValues.put("seq", count - 1);
-//        sqLiteDatabase.update("record", contentValues, "name = ?", new String[]{"record"});
+        sqLiteDatabase.delete("record", "id=?", new String[]{String.valueOf(id)});
+        //将剩下的记录id -1
+        ContentValues contentValues = new ContentValues();
+        for (int i = id + 1; i <= count; i++) {
+            contentValues.put("id", i - 1);
+            sqLiteDatabase.update("record", contentValues, "id = ?", new String[]{String.valueOf(i)});
+        }
+        //自增字段重置
+        contentValues.clear();
+        contentValues.put("seq", count - 1);
+        sqLiteDatabase.update("sqlite_sequence", contentValues, "name = ?", new String[]{"record"});
     }
 }
