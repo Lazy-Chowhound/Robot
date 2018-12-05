@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.method.LinkMovementMethod;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,7 +43,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
             other = (LinearLayout) itemView.findViewById(R.id.other);
         }
 
-
         public LinearLayout getMe() {
             return me;
         }
@@ -79,7 +79,6 @@ public class ChatAdapter extends RecyclerView.Adapter {
         tv.setText(msg.getMsg());
         tv.setAutoLinkMask(Linkify.ALL);
         tv.setMovementMethod(LinkMovementMethod.getInstance());
-
 
         switch (msg.getType()) {
             case ME:

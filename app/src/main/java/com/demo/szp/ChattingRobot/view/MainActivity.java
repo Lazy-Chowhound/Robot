@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -39,7 +40,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ArrayList<Msg> list;
 
     //图灵API参数
-    private String json = "{\"perception\":{\"inputText\":{\"text\":\"[*]\"}},\"userInfo\":{\"apiKey\":\"5aab776a08fb4940a9df4515d21b85f3\",\"userId\":\"helloRobot\"}}";;
+    private String json = "{\"perception\":{\"inputText\":{\"text\":\"[*]\"}},\"userInfo\":{\"apiKey\":\"5aab776a08fb4940a9df4515d21b85f3\",\"userId\":\"helloRobot\"}}";
+    ;
     private String send_json;
     private String text;
     private String url;
@@ -48,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private DbManager dbManager;
     private Date date;
     private SimpleDateFormat simpleDateFormat;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnSend.setOnClickListener(this);
         imageView_search.setOnClickListener(this);
         imageView_remove.setOnClickListener(this);
+
+        rvChat.addOnItemTouchListener(new RecyclerViewClick(this, rvChat, new RecyclerViewClick.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+
+            }
+
+            @Override
+            public void onItemLongClick(View view, final int position) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setTitle("是否删除这条消息");
+                builder.setNegativeButton("否", null);
+                builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        int total = chatAdapter.getItemCount();
+                        Log.i("position", "" + position);
+                        dbManager.delete_record(position + 1, total);
+                    }
+                });
+                builder.show();
+            }
+        }));
+
     }
 
     private void initView() {

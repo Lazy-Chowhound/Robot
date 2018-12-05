@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.widget.ActionBarContextView;
 import android.util.Log;
 
 import com.demo.szp.ChattingRobot.model.Msg;
@@ -68,7 +69,16 @@ public class DbManager {
      *
      * @param id
      */
-    public void search_record(int id) {
-
+    public void delete_record(int id, int count) {
+        // 删除该记录
+        sqLiteDatabase.delete("record", "id =", new String[]{String.valueOf(id)});
+//        //将剩下的记录id -1
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put("id", "id" + 1);
+//        sqLiteDatabase.update("record", contentValues, "id > ?", new String[]{String.valueOf(id)});
+//        //自增字段重置
+//        contentValues.clear();
+//        contentValues.put("seq", count - 1);
+//        sqLiteDatabase.update("record", contentValues, "name = ?", new String[]{"record"});
     }
 }
