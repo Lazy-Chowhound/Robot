@@ -20,7 +20,6 @@ import com.demo.szp.ChattingRobot.model.HttpUtils;
 import com.demo.szp.ChattingRobot.model.Msg;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -39,7 +38,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ChatAdapter chatAdapter;
     private ArrayList<Msg> list;
 
-    private String json;
+    //图灵API参数
+    private String json = "{\"perception\":{\"inputText\":{\"text\":\"[*]\"}},\"userInfo\":{\"apiKey\":\"5aab776a08fb4940a9df4515d21b85f3\",\"userId\":\"helloRobot\"}}";;
+    private String send_json;
     private String text;
     private String url;
     private String record;
@@ -86,9 +87,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         chatAdapter = new ChatAdapter(this, list);
         rvChat.setAdapter(chatAdapter);
         rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
-
-        //图灵API参数
-        json = "{\"perception\":{\"inputText\":{\"text\":\"[*]\"}},\"userInfo\":{\"apiKey\":\"5aab776a08fb4940a9df4515d21b85f3\",\"userId\":\"helloRobot\"}}";
     }
 
     @Override
@@ -99,7 +97,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 chatAdapter.notifyItemInserted(chatAdapter.getItemCount() - 1);
                 rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
 
-                json = json.replaceAll("[*]", msg_box.getText().toString());
+                send_json = json.replaceAll("[*]", msg_box.getText().toString());
+                Log.i("msg", msg_box.getText().toString());
                 date = new Date(System.currentTimeMillis());
                 dbManager.insert_record(msg_box.getText().toString(), 0, simpleDateFormat.format(date));
 
@@ -108,8 +107,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void run() {
                         try {
-                            text = new HttpUtils().sendPost("http://openapi.tuling123.com/openapi/api/v2", json);
-                            Log.i("JSON", json);
+                            text = new HttpUtils().sendPost("http://openapi.tuling123.com/openapi/api/v2", send_json);
+                            Log.i("JSON", send_json);
                             readJSON(text);
                             list.add(new Msg(text, 1));
 
@@ -177,9 +176,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String values = jsonObject1.getString("values");
                 JSONObject textJson = new JSONObject(values);
                 text = textJson.getString("text");
-                url = jsonObject1.getString("url");
+                url = textJson.getString("url");
             }
-        } catch (JSONException e) {
+        } catch (Exception e) {
             url = null;
             e.printStackTrace();
         }

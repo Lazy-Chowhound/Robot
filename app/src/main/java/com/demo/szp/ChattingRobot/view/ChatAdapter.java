@@ -42,6 +42,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
             other = (LinearLayout) itemView.findViewById(R.id.other);
         }
 
+
         public LinearLayout getMe() {
             return me;
         }
@@ -64,12 +65,11 @@ public class ChatAdapter extends RecyclerView.Adapter {
                 viewHolder = new ViewHolder(LayoutInflater.from(context).inflate(R.layout.chat_item, parent, false));
                 break;
         }
-
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         ViewHolder viewHolder = (ViewHolder) holder;
 
         TextView tv = new TextView(context);
@@ -79,6 +79,7 @@ public class ChatAdapter extends RecyclerView.Adapter {
         tv.setText(msg.getMsg());
         tv.setAutoLinkMask(Linkify.ALL);
         tv.setMovementMethod(LinkMovementMethod.getInstance());
+
 
         switch (msg.getType()) {
             case ME:
