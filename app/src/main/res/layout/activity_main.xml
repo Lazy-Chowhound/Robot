@@ -3,7 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@mipmap/background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:windowSoftInputMode="adjustResize">
 
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
@@ -59,7 +60,8 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="71dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:fitsSystemWindows="true">
 
         <EditText
             android:id="@+id/msg_box"

@@ -125,7 +125,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
 
                 send_json = json.replaceAll("[*]", msg_box.getText().toString());
-                Log.i("msg", msg_box.getText().toString());
                 date = new Date(System.currentTimeMillis());
                 dbManager.insert_record(msg_box.getText().toString(), 0, simpleDateFormat.format(date));
 
@@ -196,6 +195,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void readJSON(String strJson) {
         try {
+            Log.i("answer",strJson);
             JSONObject jsonObject = new JSONObject(strJson);
             JSONArray jsonArray = jsonObject.getJSONArray("results");
             for (int i = 0; i <= jsonArray.length(); i++) {
