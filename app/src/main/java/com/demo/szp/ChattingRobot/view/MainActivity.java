@@ -54,6 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setBackgroundDrawableResource(R.mipmap.background);
         dbManager = new DbManager(getApplicationContext());
         simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         list = new ArrayList<>();
