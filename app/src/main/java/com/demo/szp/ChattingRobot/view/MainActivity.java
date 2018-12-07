@@ -15,6 +15,7 @@ import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -47,7 +48,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String json = "{\"perception\":{\"inputText\":{\"text\":\"[*]\"}},\"userInfo\":{\"apiKey\":\"5aab776a08fb4940a9df4515d21b85f3\",\"userId\":\"helloRobot\"}}";
     private String send_json;
     private String text;
-    private String url;
     private String record;
 
     private DbManager dbManager;
@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnSend.setOnClickListener(this);
         imageView_search.setOnClickListener(this);
         imageView_remove.setOnClickListener(this);
+        imageView_picture.setOnClickListener(this);
 
         // 软键盘弹出时recyclerView上移
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -87,8 +88,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 String urltext = list.get(position).getMsg();
                 if (Patterns.WEB_URL.matcher(urltext).matches() || URLUtil.isValidUrl(urltext)) {
                     imageView_picture.setVisibility(View.VISIBLE);
-
-                    Toast.makeText(getApplicationContext(), urltext, Toast.LENGTH_LONG).show();
                     Glide.with(getApplicationContext()).load(urltext).into(imageView_picture);
                 }
             }
@@ -157,10 +156,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                             date = new Date(System.currentTimeMillis());
                             dbManager.insert_record(text, 1, simpleDateFormat.format(date));
-
-                            if (url != null) {
-                                list.add(new Msg(url, 1));
-                            }
                         } catch (IOException e) {
                             Log.e("IOException", e.toString());
                         }
@@ -206,6 +201,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 });
                 input.setNegativeButton("取消", null);
                 input.show();
+                break;
+            case R.id.picture:
+                imageView_picture.setVisibility(View.INVISIBLE);
                 break;
         }
     }
