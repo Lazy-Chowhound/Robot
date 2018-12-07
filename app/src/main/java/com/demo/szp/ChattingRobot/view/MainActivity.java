@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Patterns;
+import android.view.Gravity;
 import android.view.View;
 import android.webkit.URLUtil;
 import android.widget.Button;
@@ -48,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private String send_json;
     private String text;
     private String record;
+    private int position;
 
     private DbManager dbManager;
     private Date date;
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     imageView_picture.setY(200);
                     imageView_picture.setVisibility(View.VISIBLE);
                     Glide.with(getApplicationContext()).load(urltext).into(imageView_picture);
-                    Toast.makeText(getApplicationContext(),"再次点击图片退出",Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "再次点击图片退出", Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -190,12 +192,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         record = editText.getText().toString();
-                        for (int x = 0; x < list.size(); x++) {
-                            Msg item = list.get(x);
-                            if (item.getMsg().equals(record)) {
-                                rvChat.smoothScrollToPosition(x);
+                        for (position = 0; position < list.size(); position++) {
+                            Msg item = list.get(position);
+                            if (item.getMsg().contains(record)) {
+                                rvChat.smoothScrollToPosition(position);
                                 break;
                             }
+                        }
+                        if (position == list.size()) {
+                            Toast toast = Toast.makeText(getApplicationContext(), "无相关记录", Toast.LENGTH_LONG);
+                            toast.setGravity(Gravity.CENTER, 0, 0);
+                            toast.show();
                         }
                     }
                 });
