@@ -4,7 +4,6 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.v7.widget.ActionBarContextView;
 import android.util.Log;
 
 import com.demo.szp.ChattingRobot.model.Msg;

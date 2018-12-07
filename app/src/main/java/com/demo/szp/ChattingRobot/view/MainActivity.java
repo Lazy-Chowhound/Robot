@@ -15,7 +15,6 @@ import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -87,8 +86,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemClick(View view, int position) {
                 String urltext = list.get(position).getMsg();
                 if (Patterns.WEB_URL.matcher(urltext).matches() || URLUtil.isValidUrl(urltext)) {
+                    imageView_picture.setX(220);
+                    imageView_picture.setY(200);
                     imageView_picture.setVisibility(View.VISIBLE);
                     Glide.with(getApplicationContext()).load(urltext).into(imageView_picture);
+                    Toast.makeText(getApplicationContext(),"再次点击图片退出",Toast.LENGTH_LONG).show();
                 }
             }
 
@@ -123,8 +125,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dbManager.insert_record("你好", 1, simpleDateFormat.format(date));
         list.add(new Msg("我是对话机器人", 1));
         dbManager.insert_record("我是对话机器人", 1, simpleDateFormat.format(date));
-        list.add(new Msg("你想聊些什么", 1));
-        dbManager.insert_record("你想聊些什么", 1, simpleDateFormat.format(date));
 
         chatAdapter = new ChatAdapter(this, list);
         rvChat.setAdapter(chatAdapter);
