@@ -9,12 +9,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.util.Patterns;
 import android.view.View;
+import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.demo.szp.ChattingRobot.R;
 import com.demo.szp.ChattingRobot.database.DbManager;
 import com.demo.szp.ChattingRobot.model.HttpUtils;
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private Button btnSend;
     private ImageView imageView_remove;
     private ImageView imageView_search;
+    private ImageView imageView_picture;
 
     private RecyclerView rvChat;
     private ChatAdapter chatAdapter;
@@ -41,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //图灵API参数
     private String json = "{\"perception\":{\"inputText\":{\"text\":\"[*]\"}},\"userInfo\":{\"apiKey\":\"5aab776a08fb4940a9df4515d21b85f3\",\"userId\":\"helloRobot\"}}";
-    ;
     private String send_json;
     private String text;
     private String url;
@@ -65,16 +68,29 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         rvChat = (RecyclerView) findViewById(R.id.rv_chat);
         imageView_remove = (ImageView) findViewById(R.id.remove);
         imageView_search = (ImageView) findViewById(R.id.search);
+        imageView_picture = (ImageView) findViewById(R.id.picture);
         initView();
 
         btnSend.setOnClickListener(this);
         imageView_search.setOnClickListener(this);
         imageView_remove.setOnClickListener(this);
 
+        // 软键盘弹出时recyclerView上移
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setStackFromEnd(true);
+        rvChat.setLayoutManager(layoutManager);
+
+
         rvChat.addOnItemTouchListener(new RecyclerViewClick(this, rvChat, new RecyclerViewClick.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                String urltext = list.get(position).getMsg();
+                if (Patterns.WEB_URL.matcher(urltext).matches() || URLUtil.isValidUrl(urltext)) {
+                    imageView_picture.setVisibility(View.VISIBLE);
 
+                    Toast.makeText(getApplicationContext(), urltext, Toast.LENGTH_LONG).show();
+                    Glide.with(getApplicationContext()).load(urltext).into(imageView_picture);
+                }
             }
 
             @Override
@@ -95,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 builder.show();
             }
         }));
-
     }
 
     private void initView() {
@@ -138,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                             Log.i("JSON", send_json);
                             readJSON(text);
                             list.add(new Msg(text, 1));
+                            rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
 
                             date = new Date(System.currentTimeMillis());
                             dbManager.insert_record(text, 1, simpleDateFormat.format(date));
@@ -196,18 +212,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void readJSON(String strJson) {
         try {
-            Log.i("answer",strJson);
+            Log.i("answer", strJson);
             JSONObject jsonObject = new JSONObject(strJson);
             JSONArray jsonArray = jsonObject.getJSONArray("results");
-            for (int i = 0; i <= jsonArray.length(); i++) {
+            for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject jsonObject1 = jsonArray.getJSONObject(i);
                 String values = jsonObject1.getString("values");
                 JSONObject textJson = new JSONObject(values);
                 text = textJson.getString("text");
-                url = textJson.getString("url");
             }
         } catch (Exception e) {
-            url = null;
             e.printStackTrace();
         }
     }
