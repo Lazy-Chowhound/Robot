@@ -1,7 +1,5 @@
 package com.demo.szp.ChattingRobot.view;
 
-import android.app.Activity;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
@@ -29,10 +27,10 @@ public class Search_Activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search);
         list = new ArrayList<>();
-        rvChat = (RecyclerView) findViewById(R.id.search_chat);
+        rvChat = findViewById(R.id.search_chat);
         rvChat.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
-        imageView = (ImageView) findViewById(R.id.return_arrow);
-        textView = (TextView) findViewById(R.id.return_to);
+        imageView = findViewById(R.id.return_arrow);
+        textView = findViewById(R.id.return_to);
 
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -40,7 +38,6 @@ public class Search_Activity extends AppCompatActivity {
                 Search_Activity.this.finish();
             }
         });
-
         textView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

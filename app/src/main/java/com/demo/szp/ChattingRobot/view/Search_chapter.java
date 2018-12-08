@@ -38,9 +38,9 @@ public class Search_chapter extends RecyclerView.Adapter {
 
         public searchViewHolder(View itemView) {
             super(itemView);
-            me = (LinearLayout) itemView.findViewById(R.id.search_me);
-            other = (LinearLayout) itemView.findViewById(R.id.search_other);
-            noneitem = (LinearLayout) itemView.findViewById(R.id.none_area);
+            me = itemView.findViewById(R.id.search_me);
+            other = itemView.findViewById(R.id.search_other);
+            noneitem = itemView.findViewById(R.id.none_area);
         }
 
         public LinearLayout getMe() {

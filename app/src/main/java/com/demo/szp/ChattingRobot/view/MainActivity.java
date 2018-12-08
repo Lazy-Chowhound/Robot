@@ -65,12 +65,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         list = new ArrayList<>();
 
         setContentView(R.layout.activity_main);
-        msg_box = (EditText) findViewById(R.id.msg_box);
-        btnSend = (Button) findViewById(R.id.btn_send);
-        rvChat = (RecyclerView) findViewById(R.id.rv_chat);
-        imageView_remove = (ImageView) findViewById(R.id.remove);
-        imageView_search = (ImageView) findViewById(R.id.search);
-        imageView_picture = (ImageView) findViewById(R.id.picture);
+        msg_box = findViewById(R.id.msg_box);
+        btnSend = findViewById(R.id.btn_send);
+        rvChat = findViewById(R.id.rv_chat);
+        imageView_remove = findViewById(R.id.remove);
+        imageView_search = findViewById(R.id.search);
+        imageView_picture = findViewById(R.id.picture);
         initView();
 
         btnSend.setOnClickListener(this);

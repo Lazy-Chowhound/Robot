@@ -38,8 +38,8 @@ public class ChatAdapter extends RecyclerView.Adapter {
 
         public ViewHolder(View itemView) {
             super(itemView);
-            me = (LinearLayout) itemView.findViewById(R.id.me);
-            other = (LinearLayout) itemView.findViewById(R.id.other);
+            me = itemView.findViewById(R.id.me);
+            other = itemView.findViewById(R.id.other);
         }
 
         public LinearLayout getMe() {
