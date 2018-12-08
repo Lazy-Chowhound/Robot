@@ -1,6 +1,7 @@
 package com.demo.szp.ChattingRobot.view;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -178,32 +179,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         list.clear();
                         chatAdapter.notifyItemRangeRemoved(0, count);
                         rvChat.smoothScrollToPosition(0);
+                        Toast toast = Toast.makeText(getApplicationContext(), "清空消息成功", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
                     }
                 });
                 builder.setNegativeButton("否", null);
                 builder.show();
                 break;
             case R.id.search:
+                final Intent intent = new Intent(MainActivity.this, Search_Activity.class);
                 final EditText editText = new EditText(this);
-                AlertDialog.Builder input = new AlertDialog.Builder(this);
+                final AlertDialog.Builder input = new AlertDialog.Builder(this);
                 input.setTitle("输入想查找的消息");
                 input.setView(editText);
                 input.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        int search_count = 0;
                         record = editText.getText().toString();
                         for (position = 0; position < list.size(); position++) {
                             Msg item = list.get(position);
                             if (item.getMsg().contains(record)) {
-                                rvChat.smoothScrollToPosition(position);
-                                break;
+                                intent.putExtra("" + search_count, item.getMsg());
+                                intent.putExtra("" + search_count + "type", item.getType());
+                                search_count++;
                             }
                         }
-                        if (position == list.size()) {
-                            Toast toast = Toast.makeText(getApplicationContext(), "无相关记录", Toast.LENGTH_LONG);
-                            toast.setGravity(Gravity.CENTER, 0, 0);
-                            toast.show();
-                        }
+                        startActivity(intent);
                     }
                 });
                 input.setNegativeButton("取消", null);
