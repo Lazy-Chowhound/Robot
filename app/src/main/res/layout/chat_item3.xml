@@ -12,6 +12,7 @@
         android:layout_height="50dp"
         android:layout_gravity="center_vertical"
         android:layout_marginRight="5dp"
+        android:layout_marginTop="3dp"
         android:src="@mipmap/robot"
         app:riv_oval="true" />
 
@@ -24,15 +25,7 @@
         android:layout_gravity="center_vertical"
         android:layout_marginStart="60dp"
         android:layout_weight="1"
-        android:orientation="horizontal"></LinearLayout>
-
-    <View
-        android:id="@+id/other_downline"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_below="@+id/iv_search_other"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="2dp"
-        android:background="#000000" />
+        android:orientation="horizontal">
+    </LinearLayout>
 
 </RelativeLayout>

@@ -11,6 +11,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_marginRight="5dp"
+        android:layout_marginTop="3dp"
         android:layout_gravity="center_vertical"
         android:src="@mipmap/me"
         app:riv_oval="true"/>
@@ -27,12 +28,4 @@
         android:orientation="horizontal">
     </LinearLayout>
 
-    <View
-        android:id="@+id/me_downline"
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_below="@+id/iv_search_me"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="2dp"
-        android:background="#000000" />
 </RelativeLayout>
