@@ -17,7 +17,7 @@ import java.util.ArrayList;
 
 public class Search_Activity extends AppCompatActivity {
     private RecyclerView rvChat;
-    private Search_chapter search_chapter;
+    private SearchChapter search_chapter;
     private ArrayList<Msg> list;
     private ImageView imageView;
     private TextView textView;
@@ -50,6 +50,7 @@ public class Search_Activity extends AppCompatActivity {
 
     private void initView() {
         rvChat.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        //获取传输过来的数据
         Bundle bundle = getIntent().getExtras();
         try {
             int size = bundle.size();
@@ -62,7 +63,7 @@ public class Search_Activity extends AppCompatActivity {
         } catch (Exception e) {
             list.add(new Msg("无相关记录", 2));
         }
-        search_chapter = new Search_chapter(this, list);
+        search_chapter = new SearchChapter(this, list);
         rvChat.setAdapter(search_chapter);
         rvChat.smoothScrollToPosition(0);
     }

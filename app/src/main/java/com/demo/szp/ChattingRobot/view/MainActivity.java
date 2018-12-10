@@ -1,6 +1,5 @@
 package com.demo.szp.ChattingRobot.view;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,16 +12,11 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.Gravity;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.webkit.URLUtil;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -116,6 +110,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         }));
 
+        // 弹出对话框时RecyclerView上移
         rvChat.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
             @Override
             public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
@@ -139,6 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dbManager.insert_record("你好", 1, simpleDateFormat.format(date));
         list.add(new Msg("我是对话机器人", 1));
         dbManager.insert_record("我是对话机器人", 1, simpleDateFormat.format(date));
+
         chatAdapter = new ChatAdapter(this, list);
         rvChat.setAdapter(chatAdapter);
         rvChat.smoothScrollToPosition(chatAdapter.getItemCount() - 1);
@@ -157,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 dbManager.insert_record(msg_box.getText().toString(), 0, simpleDateFormat.format(date));
 
                 msg_box.setText("");
+                //向图灵API发送消息
                 new Thread() {
                     @Override
                     public void run() {
@@ -228,6 +225,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //处理返回的json
     public void readJSON(String strJson) {
         try {
             Log.i("answer", strJson);

@@ -16,7 +16,7 @@ import com.demo.szp.ChattingRobot.model.Msg;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Search_chapter extends RecyclerView.Adapter {
+public class SearchChapter extends RecyclerView.Adapter {
     private Context context;
 
     private static final int ME = 0;
@@ -25,7 +25,7 @@ public class Search_chapter extends RecyclerView.Adapter {
 
     private List<Msg> list;
 
-    public Search_chapter(Context context, ArrayList<Msg> list) {
+    public SearchChapter(Context context, ArrayList<Msg> list) {
         this.context = context;
         this.list = list;
     }
@@ -59,17 +59,17 @@ public class Search_chapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        Search_chapter.searchViewHolder viewHolder = null;
+        SearchChapter.searchViewHolder viewHolder = null;
 
         switch (viewType) {
             case ME:
-                viewHolder = new Search_chapter.searchViewHolder(LayoutInflater.from(context).inflate(R.layout.chat_item4, parent, false));
+                viewHolder = new SearchChapter.searchViewHolder(LayoutInflater.from(context).inflate(R.layout.chat_item4, parent, false));
                 break;
             case OTHRE:
-                viewHolder = new Search_chapter.searchViewHolder(LayoutInflater.from(context).inflate(R.layout.chat_item3, parent, false));
+                viewHolder = new SearchChapter.searchViewHolder(LayoutInflater.from(context).inflate(R.layout.chat_item3, parent, false));
                 break;
             case NONEITEM:
-                viewHolder = new Search_chapter.searchViewHolder(LayoutInflater.from(context).inflate(R.layout.none_item, parent, false));
+                viewHolder = new SearchChapter.searchViewHolder(LayoutInflater.from(context).inflate(R.layout.none_item, parent, false));
                 break;
         }
         return viewHolder;
@@ -77,7 +77,7 @@ public class Search_chapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
-        Search_chapter.searchViewHolder viewHolder = (Search_chapter.searchViewHolder) holder;
+        SearchChapter.searchViewHolder viewHolder = (SearchChapter.searchViewHolder) holder;
 
         TextView tv = new TextView(context);
 

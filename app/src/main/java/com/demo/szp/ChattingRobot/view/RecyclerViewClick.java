@@ -44,6 +44,7 @@ public class RecyclerViewClick implements RecyclerView.OnItemTouchListener {
 
     @Override
     public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+        //把事件交给GestureDetector处理
         if (gestureDetector.onTouchEvent(e)) {
             return true;
         } else
@@ -51,8 +52,10 @@ public class RecyclerViewClick implements RecyclerView.OnItemTouchListener {
     }
 
     @Override
-    public void onTouchEvent(RecyclerView rv, MotionEvent e) {}
+    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+    }
 
     @Override
-    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {}
+    public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+    }
 }
