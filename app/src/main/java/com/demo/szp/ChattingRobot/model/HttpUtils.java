@@ -15,7 +15,6 @@ public class HttpUtils {
 
     private OkHttpClient client;
 
-
     public String sendPost(String url, String json) throws IOException {
         client = new OkHttpClient();
         MediaType JSON = MediaType.parse("application/json; charset=utf-8");
