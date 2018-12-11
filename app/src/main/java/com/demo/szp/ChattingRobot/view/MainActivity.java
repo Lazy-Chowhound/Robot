@@ -83,11 +83,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onItemClick(View view, int position) {
                 String urltext = list.get(position).getMsg();
                 if (Patterns.WEB_URL.matcher(urltext).matches() || URLUtil.isValidUrl(urltext)) {
-                    imageView_picture.setX(220);
-                    imageView_picture.setY(250);
-                    imageView_picture.setVisibility(View.VISIBLE);
-                    Glide.with(getApplicationContext()).load(urltext).into(imageView_picture);
-                    Toast.makeText(getApplicationContext(), "再次点击图片退出", Toast.LENGTH_LONG).show();
+                    if (urltext.contains(".jpg") || urltext.contains(".bmp") || urltext.contains(".bmp") || urltext.contains(".gif")
+                            || urltext.contains(".jepg") || urltext.contains(".png") || urltext.contains(".svg") || urltext.contains(".swf")) {
+                        imageView_picture.setX(220);
+                        imageView_picture.setY(250);
+                        imageView_picture.setVisibility(View.VISIBLE);
+                        Glide.with(getApplicationContext()).load(urltext).into(imageView_picture);
+                        Toast toast = Toast.makeText(getApplicationContext(), "再次点击图片退出", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    } else {
+                        Toast toast = Toast.makeText(getApplicationContext(), "非图片无法显示", Toast.LENGTH_LONG);
+                        toast.setGravity(Gravity.CENTER, 0, 0);
+                        toast.show();
+                    }
                 }
             }
 
